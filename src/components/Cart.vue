@@ -5,17 +5,34 @@
     <div class="product-display">
       <div class="product-container">
         <div class="product-image">
-          <img :src="displayedSocks.img">
+          <img :src="socks.img">
           <!-- <img :src="imageGreenSocks" :alt="description[1]"> -->
         <!-- image goes here -->
         </div>
         <div class="product-info">
           <h1>{{ product }}</h1>
-          <p v-if="socks.green.inventory >= 10">In Stock</p>
-          <p v-else-if="socks.green.inventory < 10 && socks.green.inventory > 0">Almost sold out</p>
+          <p v-if="socks.inventory >= 10">In Stock</p>
+          <p v-else-if="socks.inventory < 10 && socks.inventory > 0">Almost sold out</p>
           <p v-else>Out of Stock</p>
-          <p v-show="socks.green.onSale">On Sale</p>
+          <ul>
+            <li
+              v-for="(detail, index) in socks.details"
+              :key="index"
+              >{{ `${index + 1}. ${detail}` }}</li> 
+          </ul>
+          <div
+            v-for="(variant, index) in socks.variants"
+            :key="variant.id"
+            >{{ variant.color }}</div>
         </div>
+        <ul>
+          <li
+            v-for="(size, index) in socks.sizes"
+            :key="index"
+          >
+            {{ size }}
+          </li>
+        </ul>
       </div>
     </div>
 
@@ -27,20 +44,16 @@ import { ref } from 'vue';
 
 const product = ref('Shoes')
 const socks = {
-  green: {
-    color: 'Green',
     img: "./src//components//images//socks_green.png",
     inventory: 10,
-    onSale: true
-  },
-  blue: {
-    color: 'Blue',
-    img: "./src//components//images//blue.png",
-    inventory: 8,
-    onSale: false
+    onSale: true,
+    details: ['50% cotton', '30% wool', '20% polyester'],
+    variants: [
+              { id: 2234, color: 'green' },
+              { id: 2235, color: 'blue' },
+              ],
+    sizes: ['XS', 'S', 'L', 'XL']    
   }
-}
-const displayedSocks = ref(socks.green)
 const url = 'https://www.vuemastery.com/'
 
 
