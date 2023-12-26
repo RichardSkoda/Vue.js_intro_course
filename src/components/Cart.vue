@@ -11,7 +11,10 @@
         </div>
         <div class="product-info">
           <h1>{{ product }}</h1>
-          <a :href="url">Made by Vue Mastery</a>
+          <p v-if="socks.green.inventory >= 10">In Stock</p>
+          <p v-else-if="socks.green.inventory < 10 && socks.green.inventory > 0">Almost sold out</p>
+          <p v-else>Out of Stock</p>
+          <p v-show="socks.green.onSale">On Sale</p>
         </div>
       </div>
     </div>
@@ -26,11 +29,15 @@ const product = ref('Shoes')
 const socks = {
   green: {
     color: 'Green',
-    img: "./src//components//images//socks_green.png"
+    img: "./src//components//images//socks_green.png",
+    inventory: 10,
+    onSale: true
   },
   blue: {
     color: 'Blue',
-    img: "./src//components//images//blue.png"
+    img: "./src//components//images//blue.png",
+    inventory: 8,
+    onSale: false
   }
 }
 const displayedSocks = ref(socks.green)
