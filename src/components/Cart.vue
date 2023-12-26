@@ -1,13 +1,13 @@
 <template>
 
     <div class="nav-bar"></div>
+
+    <div class="cart">Cart({{ socks.cart }})</div>
     
     <div class="product-display">
       <div class="product-container">
         <div class="product-image">
           <img :src="socks.img">
-          <!-- <img :src="imageGreenSocks" :alt="description[1]"> -->
-        <!-- image goes here -->
         </div>
         <div class="product-info">
           <h1>{{ product }}</h1>
@@ -18,21 +18,30 @@
             <li
               v-for="(detail, index) in socks.details"
               :key="index"
-              >{{ `${index + 1}. ${detail}` }}</li> 
+            >
+              {{ `${index + 1}. ${detail}` }}
+            </li> 
           </ul>
           <div
             v-for="(variant, index) in socks.variants"
             :key="variant.id"
-            >{{ variant.color }}</div>
-        </div>
-        <ul>
-          <li
-            v-for="(size, index) in socks.sizes"
-            :key="index"
+            @mouseover="updateVariant(variant.image)"
           >
-            {{ size }}
-          </li>
-        </ul>
+            {{ variant.color }}
+          </div>
+          <button
+            class="button"
+            @click="addToCart"
+            >
+              Add to Cart
+          </button>
+          <button
+            class="button"
+            @click="reset"
+            >
+              Erase Cart
+          </button>
+        </div>
       </div>
     </div>
 
@@ -43,18 +52,31 @@ import { ref } from 'vue';
 
 
 const product = ref('Shoes')
-const socks = {
+const socks = ref({
+    cart: 0,
     img: "./src//components//images//socks_green.png",
     inventory: 10,
     onSale: true,
     details: ['50% cotton', '30% wool', '20% polyester'],
     variants: [
-              { id: 2234, color: 'green' },
-              { id: 2235, color: 'blue' },
+              { id: 2234, color: 'green', image: "./src//components//images//socks_green.png", },
+              { id: 2235, color: 'blue', image: "./src//components//images//socks_blue.png", },
               ],
     sizes: ['XS', 'S', 'L', 'XL']    
-  }
+  })
 const url = 'https://www.vuemastery.com/'
+
+const addToCart = () => {
+  socks.value.cart ++
+}
+
+const updateVariant = (variantImage: string) => {
+  socks.value.img = variantImage
+}
+
+const reset = () => {
+  socks.value.cart = 0
+}
 
 
 </script>
@@ -149,10 +171,6 @@ li {
   -webkit-box-shadow: 0px 2px 15px -12px rgba(0, 0, 0, 0.57);
   -moz-box-shadow: 0px 2px 15px -12px rgba(0, 0, 0, 0.57);
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.57);
-}
-
-.out-of-stock-img {
-  opacity: 0.5;
 }
 
 p {
