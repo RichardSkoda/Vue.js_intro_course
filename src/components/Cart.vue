@@ -6,13 +6,15 @@
     
     <div class="product-display">
       <div class="product-container">
-        <div class="product-image">
+        <div
+          class="product-image"
+          :class="{ 'out-of-stock-img': !socks.inStock }"
+        >
           <img :src="socks.img">
         </div>
         <div class="product-info">
           <h1>{{ product }}</h1>
-          <p v-if="socks.inventory >= 10">In Stock</p>
-          <p v-else-if="socks.inventory < 10 && socks.inventory > 0">Almost sold out</p>
+          <p v-if="socks.inStock">In Stock</p>
           <p v-else>Out of Stock</p>
           <ul>
             <li
@@ -26,11 +28,14 @@
             v-for="(variant, index) in socks.variants"
             :key="variant.id"
             @mouseover="updateVariant(variant.image)"
+            class="color-circle"
+            :style="{ backgroundColor: variant.color }"
           >
-            {{ variant.color }}
           </div>
           <button
             class="button"
+            :class="{ disabledButton: !socks.inStock }"
+            :disabled="!socks.inStock"
             @click="addToCart"
             >
               Add to Cart
@@ -55,7 +60,7 @@ const product = ref('Shoes')
 const socks = ref({
     cart: 0,
     img: "./src//components//images//socks_green.png",
-    inventory: 10,
+    inStock: false,
     onSale: true,
     details: ['50% cotton', '30% wool', '20% polyester'],
     variants: [
@@ -64,7 +69,6 @@ const socks = ref({
               ],
     sizes: ['XS', 'S', 'L', 'XL']    
   })
-const url = 'https://www.vuemastery.com/'
 
 const addToCart = () => {
   socks.value.cart ++
@@ -171,6 +175,10 @@ li {
   -webkit-box-shadow: 0px 2px 15px -12px rgba(0, 0, 0, 0.57);
   -moz-box-shadow: 0px 2px 15px -12px rgba(0, 0, 0, 0.57);
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.57);
+}
+
+.out-of-stock-img {
+  opacity: 0.5;
 }
 
 p {
