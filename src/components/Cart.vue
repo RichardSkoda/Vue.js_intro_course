@@ -2,10 +2,12 @@
 
     <div class="nav-bar"></div>
 
-    <div class="cart">Cart({{ cart }})</div>
+    <div class="cart">Cart({{ cart.length }})</div>
     <ProductDisplay
       :cart="cart"
       :premium="premium"
+      @ad-to-cart="addToCart"
+      @remove-from-cart="removeFromCart"
     />
 
 </template>
@@ -14,8 +16,14 @@
 import { ref, computed } from 'vue';
 import ProductDisplay from './ProductDisplay.vue'
 
-const cart = ref(0)
+const cart = ref<Array<number>>([])
 const premium = ref(false)
+
+const addToCart = (id: number) => cart.value.push(id)
+const removeFromCart = (id: number) => {
+  const index = cart.value.indexOf(id)
+  if(index > -1) cart.value.splice(index, 1)
+}
 
 
 </script>

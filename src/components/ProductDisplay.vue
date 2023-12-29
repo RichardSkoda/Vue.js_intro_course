@@ -34,9 +34,9 @@
           </button>
           <button
             class="button"
-            @click="reset"
+            @click="remove"
             >
-              Erase Cart
+              Remove
           </button>
         </div>
       </div>
@@ -49,7 +49,7 @@ import ProductDetails from './ProductDetails.vue'
 
 const props = defineProps({
   cart: {
-    type: Number,
+    type: Array,
     required: true
   },
   premium: {
@@ -58,6 +58,11 @@ const props = defineProps({
   }
 })
 
+const emits = defineEmits<{
+  (e: 'ad-to-cart', id: number): void
+  (e: 'remove-from-cart', id: number): void
+}>()
+
 const product = ref('Socks')
 const socks = ref({
     selectedVariant: 0,
@@ -65,7 +70,7 @@ const socks = ref({
     details: ['50% cotton', '30% wool', '20% polyester'],
     variants: [
               { id: 2234, color: 'green', image: "./src//components//images//socks_green.png", quantity: 50, onSale: true},
-              { id: 2235, color: 'blue', image: "./src//components//images//socks_blue.png",  quantity: 0, onSale: false},
+              { id: 2235, color: 'blue', image: "./src//components//images//socks_blue.png",  quantity: 5, onSale: false},
               ],
     sizes: ['XS', 'S', 'L', 'XL']    
   })
@@ -77,15 +82,15 @@ const socks = ref({
 
 
 const addToCart = () => {
-  props.cart ++
+  emits('ad-to-cart', socks.value.variants[socks.value.selectedVariant].id)
 }
 
 const updateVariant = (index: number) => {
   socks.value.selectedVariant = index
 }
 
-const reset = () => {
-  props.cart = 0
+const remove = () => {
+  emits('remove-from-cart', socks.value.variants[socks.value.selectedVariant].id)
 }
 
 </script>
