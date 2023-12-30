@@ -40,12 +40,21 @@
           </button>
         </div>
       </div>
+      <ReviewList
+        :reviews="socks.reviews"
+        v-if="socks.reviews.length"
+      />
+      <ReviweForm
+        @reviewsubmitted="addReview"
+      />
     </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import ProductDetails from './ProductDetails.vue'
+import ReviweForm from './ReviewForm.vue'
+import ReviewList from './ReviewList.vue';
 
 const props = defineProps({
   cart: {
@@ -72,7 +81,8 @@ const socks = ref({
               { id: 2234, color: 'green', image: "./src//components//images//socks_green.png", quantity: 50, onSale: true},
               { id: 2235, color: 'blue', image: "./src//components//images//socks_blue.png",  quantity: 5, onSale: false},
               ],
-    sizes: ['XS', 'S', 'L', 'XL']    
+    sizes: ['XS', 'S', 'L', 'XL'],
+    reviews: [] 
   })
   const title = computed(() => `${socks.value.brand} ${product.value}`)
   const image = computed(() => socks.value.variants[socks.value.selectedVariant].image)
@@ -92,6 +102,8 @@ const updateVariant = (index: number) => {
 const remove = () => {
   emits('remove-from-cart', socks.value.variants[socks.value.selectedVariant].id)
 }
+
+const addReview = (review: object) => socks.value.reviews.push(review)
 
 </script>
 

@@ -20,6 +20,7 @@ const cart = ref<Array<number>>([])
 const premium = ref(false)
 
 const addToCart = (id: number) => cart.value.push(id)
+
 const removeFromCart = (id: number) => {
   const index = cart.value.indexOf(id)
   if(index > -1) cart.value.splice(index, 1)
